@@ -34,15 +34,13 @@
 (function(wl) {
     "use strict";
 
-    var protocol = {};
-
 
     var WL_DISPLAY_ERROR = {
         'INVALID_OBJECT': 0, // server couldn't find object
         'INVALID_METHOD': 1, // method doesn't exist on the specified interface
         'NO_MEMORY': 2, // server is out of memory
     };
-    protocol.WL_DISPLAY_ERROR = WL_DISPLAY_ERROR;
+    wl.WL_DISPLAY_ERROR = WL_DISPLAY_ERROR;
 
     var wl_display = wl.Resource.create({
         name: 'wl_display',
@@ -58,7 +56,7 @@
             ["delete_id", "u"],
         ],
     });
-    protocol.wl_display = wl_display;
+    wl.wl_display = wl_display;
 
 
     var wl_registry = wl.Resource.create({
@@ -74,7 +72,7 @@
             ["global_remove", "u"],
         ],
     });
-    protocol.wl_registry = wl_registry;
+    wl.wl_registry = wl_registry;
 
 
     var wl_callback = wl.Resource.create({
@@ -89,7 +87,7 @@
             ["done", "u"],
         ],
     });
-    protocol.wl_callback = wl_callback;
+    wl.wl_callback = wl_callback;
 
 
     var wl_compositor = wl.Resource.create({
@@ -105,7 +103,7 @@
 
         ],
     });
-    protocol.wl_compositor = wl_compositor;
+    wl.wl_compositor = wl_compositor;
 
 
     var wl_shm_pool = wl.Resource.create({
@@ -122,14 +120,14 @@
 
         ],
     });
-    protocol.wl_shm_pool = wl_shm_pool;
+    wl.wl_shm_pool = wl_shm_pool;
 
     var WL_SHM_ERROR = {
         'INVALID_FORMAT': 0, // buffer format is not known
         'INVALID_STRIDE': 1, // invalid size or stride during pool or buffer creation
         'INVALID_FD': 2, // mmapping the file descriptor failed
     };
-    protocol.WL_SHM_ERROR = WL_SHM_ERROR;
+    wl.WL_SHM_ERROR = WL_SHM_ERROR;
 
     var WL_SHM_FORMAT = {
         'ARGB8888': 0, // 32-bit ARGB format
@@ -191,7 +189,7 @@
         'YUV444': 0x34325559,
         'YVU444': 0x34325659,
     };
-    protocol.WL_SHM_FORMAT = WL_SHM_FORMAT;
+    wl.WL_SHM_FORMAT = WL_SHM_FORMAT;
 
     var wl_shm = wl.Resource.create({
         name: 'wl_shm',
@@ -205,7 +203,7 @@
             ["format", "u"],
         ],
     });
-    protocol.wl_shm = wl_shm;
+    wl.wl_shm = wl_shm;
 
 
     var wl_buffer = wl.Resource.create({
@@ -220,7 +218,7 @@
             ["release", ""],
         ],
     });
-    protocol.wl_buffer = wl_buffer;
+    wl.wl_buffer = wl_buffer;
 
 
     var wl_data_offer = wl.Resource.create({
@@ -237,7 +235,7 @@
             ["offer", "s"],
         ],
     });
-    protocol.wl_data_offer = wl_data_offer;
+    wl.wl_data_offer = wl_data_offer;
 
 
     var wl_data_source = wl.Resource.create({
@@ -255,7 +253,7 @@
             ["cancelled", ""],
         ],
     });
-    protocol.wl_data_source = wl_data_source;
+    wl.wl_data_source = wl_data_source;
 
 
     var wl_data_device = wl.Resource.create({
@@ -276,7 +274,7 @@
             ["selection", "?o"],
         ],
     });
-    protocol.wl_data_device = wl_data_device;
+    wl.wl_data_device = wl_data_device;
 
 
     var wl_data_device_manager = wl.Resource.create({
@@ -292,7 +290,7 @@
 
         ],
     });
-    protocol.wl_data_device_manager = wl_data_device_manager;
+    wl.wl_data_device_manager = wl_data_device_manager;
 
 
     var wl_shell = wl.Resource.create({
@@ -307,7 +305,7 @@
 
         ],
     });
-    protocol.wl_shell = wl_shell;
+    wl.wl_shell = wl_shell;
 
     var WL_SHELL_SURFACE_RESIZE = {
         'NONE': 0,
@@ -320,12 +318,12 @@
         'TOP_RIGHT': 9,
         'BOTTOM_RIGHT': 10,
     };
-    protocol.WL_SHELL_SURFACE_RESIZE = WL_SHELL_SURFACE_RESIZE;
+    wl.WL_SHELL_SURFACE_RESIZE = WL_SHELL_SURFACE_RESIZE;
 
     var WL_SHELL_SURFACE_TRANSIENT = {
         'INACTIVE': 0x1, // do not set keyboard focus
     };
-    protocol.WL_SHELL_SURFACE_TRANSIENT = WL_SHELL_SURFACE_TRANSIENT;
+    wl.WL_SHELL_SURFACE_TRANSIENT = WL_SHELL_SURFACE_TRANSIENT;
 
     var WL_SHELL_SURFACE_FULLSCREEN_METHOD = {
         'DEFAULT': 0, // no preference, apply default policy
@@ -333,7 +331,7 @@
         'DRIVER': 2, // switch output mode to the smallest mode that can fit the surface, add black borders to compensate size mismatch
         'FILL': 3, // no upscaling, center on output and add black borders to compensate size mismatch
     };
-    protocol.WL_SHELL_SURFACE_FULLSCREEN_METHOD = WL_SHELL_SURFACE_FULLSCREEN_METHOD;
+    wl.WL_SHELL_SURFACE_FULLSCREEN_METHOD = WL_SHELL_SURFACE_FULLSCREEN_METHOD;
 
     var wl_shell_surface = wl.Resource.create({
         name: 'wl_shell_surface',
@@ -358,13 +356,13 @@
             ["popup_done", ""],
         ],
     });
-    protocol.wl_shell_surface = wl_shell_surface;
+    wl.wl_shell_surface = wl_shell_surface;
 
     var WL_SURFACE_ERROR = {
         'INVALID_SCALE': 0, // buffer scale value is invalid
         'INVALID_TRANSFORM': 1, // buffer transform value is invalid
     };
-    protocol.WL_SURFACE_ERROR = WL_SURFACE_ERROR;
+    wl.WL_SURFACE_ERROR = WL_SURFACE_ERROR;
 
     var wl_surface = wl.Resource.create({
         name: 'wl_surface',
@@ -387,14 +385,14 @@
             ["leave", "o"],
         ],
     });
-    protocol.wl_surface = wl_surface;
+    wl.wl_surface = wl_surface;
 
     var WL_SEAT_CAPABILITY = {
         'POINTER': 1, // The seat has pointer devices
         'KEYBOARD': 2, // The seat has one or more keyboards
         'TOUCH': 4, // The seat has touch devices
     };
-    protocol.WL_SEAT_CAPABILITY = WL_SEAT_CAPABILITY;
+    wl.WL_SEAT_CAPABILITY = WL_SEAT_CAPABILITY;
 
     var wl_seat = wl.Resource.create({
         name: 'wl_seat',
@@ -411,19 +409,19 @@
             ["name", "s"],
         ],
     });
-    protocol.wl_seat = wl_seat;
+    wl.wl_seat = wl_seat;
 
     var WL_POINTER_BUTTON_STATE = {
         'RELEASED': 0, // The button is not pressed
         'PRESSED': 1, // The button is pressed
     };
-    protocol.WL_POINTER_BUTTON_STATE = WL_POINTER_BUTTON_STATE;
+    wl.WL_POINTER_BUTTON_STATE = WL_POINTER_BUTTON_STATE;
 
     var WL_POINTER_AXIS = {
         'VERTICAL_SCROLL': 0,
         'HORIZONTAL_SCROLL': 1,
     };
-    protocol.WL_POINTER_AXIS = WL_POINTER_AXIS;
+    wl.WL_POINTER_AXIS = WL_POINTER_AXIS;
 
     var wl_pointer = wl.Resource.create({
         name: 'wl_pointer',
@@ -442,19 +440,19 @@
             ["axis", "uuf"],
         ],
     });
-    protocol.wl_pointer = wl_pointer;
+    wl.wl_pointer = wl_pointer;
 
     var WL_KEYBOARD_KEYMAP_FORMAT = {
         'NO_KEYMAP': 0, // no keymap; client must understand how to interpret the raw keycode
         'XKB_V1': 1, // libxkbcommon compatible; to determine the xkb keycode, clients must add 8 to the key event keycode
     };
-    protocol.WL_KEYBOARD_KEYMAP_FORMAT = WL_KEYBOARD_KEYMAP_FORMAT;
+    wl.WL_KEYBOARD_KEYMAP_FORMAT = WL_KEYBOARD_KEYMAP_FORMAT;
 
     var WL_KEYBOARD_KEY_STATE = {
         'RELEASED': 0, // key is not pressed
         'PRESSED': 1, // key is pressed
     };
-    protocol.WL_KEYBOARD_KEY_STATE = WL_KEYBOARD_KEY_STATE;
+    wl.WL_KEYBOARD_KEY_STATE = WL_KEYBOARD_KEY_STATE;
 
     var wl_keyboard = wl.Resource.create({
         name: 'wl_keyboard',
@@ -473,7 +471,7 @@
             ["repeat_info", "ii"],
         ],
     });
-    protocol.wl_keyboard = wl_keyboard;
+    wl.wl_keyboard = wl_keyboard;
 
 
     var wl_touch = wl.Resource.create({
@@ -492,7 +490,7 @@
             ["cancel", ""],
         ],
     });
-    protocol.wl_touch = wl_touch;
+    wl.wl_touch = wl_touch;
 
     var WL_OUTPUT_SUBPIXEL = {
         'UNKNOWN': 0,
@@ -502,7 +500,7 @@
         'VERTICAL_RGB': 4,
         'VERTICAL_BGR': 5,
     };
-    protocol.WL_OUTPUT_SUBPIXEL = WL_OUTPUT_SUBPIXEL;
+    wl.WL_OUTPUT_SUBPIXEL = WL_OUTPUT_SUBPIXEL;
 
     var WL_OUTPUT_TRANSFORM = {
         'NORMAL': 0,
@@ -514,13 +512,13 @@
         'FLIPPED_180': 6,
         'FLIPPED_270': 7,
     };
-    protocol.WL_OUTPUT_TRANSFORM = WL_OUTPUT_TRANSFORM;
+    wl.WL_OUTPUT_TRANSFORM = WL_OUTPUT_TRANSFORM;
 
     var WL_OUTPUT_MODE = {
         'CURRENT': 0x1, // indicates this is the current mode
         'PREFERRED': 0x2, // indicates this is the preferred mode
     };
-    protocol.WL_OUTPUT_MODE = WL_OUTPUT_MODE;
+    wl.WL_OUTPUT_MODE = WL_OUTPUT_MODE;
 
     var wl_output = wl.Resource.create({
         name: 'wl_output',
@@ -537,7 +535,7 @@
             ["scale", "i"],
         ],
     });
-    protocol.wl_output = wl_output;
+    wl.wl_output = wl_output;
 
 
     var wl_region = wl.Resource.create({
@@ -554,12 +552,12 @@
 
         ],
     });
-    protocol.wl_region = wl_region;
+    wl.wl_region = wl_region;
 
     var WL_SUBCOMPOSITOR_ERROR = {
         'BAD_SURFACE': 0, // the to-be sub-surface is invalid
     };
-    protocol.WL_SUBCOMPOSITOR_ERROR = WL_SUBCOMPOSITOR_ERROR;
+    wl.WL_SUBCOMPOSITOR_ERROR = WL_SUBCOMPOSITOR_ERROR;
 
     var wl_subcompositor = wl.Resource.create({
         name: 'wl_subcompositor',
@@ -574,12 +572,12 @@
 
         ],
     });
-    protocol.wl_subcompositor = wl_subcompositor;
+    wl.wl_subcompositor = wl_subcompositor;
 
     var WL_SUBSURFACE_ERROR = {
         'BAD_SURFACE': 0, // wl_surface is not a sibling or the parent
     };
-    protocol.WL_SUBSURFACE_ERROR = WL_SUBSURFACE_ERROR;
+    wl.WL_SUBSURFACE_ERROR = WL_SUBSURFACE_ERROR;
 
     var wl_subsurface = wl.Resource.create({
         name: 'wl_subsurface',
@@ -598,9 +596,7 @@
 
         ],
     });
-    protocol.wl_subsurface = wl_subsurface;
+    wl.wl_subsurface = wl_subsurface;
 
-
-    wl.wayland = protocol;
 })(window.wl);
 

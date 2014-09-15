@@ -121,7 +121,7 @@
         var display = client.display;
 
         function sync(newID) {
-            var callback = new wl.wayland.wl_callback(client, newID, this.version);
+            var callback = new wl.wl_callback(client, newID, this.version);
             callback.done(display.nextSerial());
         }
 
@@ -142,7 +142,7 @@
                 global.bindFunc(resource);
             }
 
-            var registry = new wl.wayland.wl_registry(client, newID, this.version);
+            var registry = new wl.wl_registry(client, newID, this.version);
             registry.setImplementation({
                 bind: bind,
             });
@@ -155,7 +155,7 @@
         }
 
         // Bootstrap the global display.
-        this.displayResource = new wl.wayland.wl_display(client, 1, 1);
+        this.displayResource = new wl.wl_display(client, 1, 1);
         this.displayResource.setImplementation({
             sync: sync,
             get_registry: get_registry,

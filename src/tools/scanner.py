@@ -36,7 +36,7 @@ ENUM = '''
     var %(fqname)s = {
 %(entries)s
     };
-    protocol.%(fqname)s = %(fqname)s;
+    wl.%(fqname)s = %(fqname)s;
 '''.rstrip()
 
 def scan_enum(prefix, enum):
@@ -68,7 +68,7 @@ INTERFACE = '''
 %(events)s
         ],
     });
-    protocol.%(name)s = %(name)s;
+    wl.%(name)s = %(name)s;
 '''.lstrip()
 
 def scan_interface(iface):
@@ -101,11 +101,7 @@ PROTOCOL = '''
 (function(wl) {
     "use strict";
 
-    var protocol = {};
-
 %(contents)s
-
-    wl.%(name)s = protocol;
 })(window.wl);
 '''
 
