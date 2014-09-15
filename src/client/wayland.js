@@ -36,7 +36,7 @@
 
     var protocol = {};
 
-    
+
     var WL_DISPLAY_ERROR = {
         'INVALID_OBJECT': 0, // server couldn't find object
         'INVALID_METHOD': 1, // method doesn't exist on the specified interface

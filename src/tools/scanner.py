@@ -103,7 +103,7 @@ PROTOCOL = '''
 
     var protocol = {};
 
-    %(contents)s
+%(contents)s
 
     wl.%(name)s = protocol;
 })(window.wl);
