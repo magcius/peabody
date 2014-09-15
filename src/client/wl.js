@@ -120,13 +120,12 @@
         var client = this;
         var display = client.display;
 
-        function sync(newID) {
-            var callback = new wl.wl_callback(client, newID);
+        function sync(callback) {
             callback.setVersion(this.version);
             callback.done(display.nextSerial());
         }
 
-        function get_registry(newID) {
+        function get_registry(registry) {
             function findGlobal(name) {
                 var idx = name - 1;
                 return display.$globals[idx];
@@ -144,7 +143,6 @@
                 global.bindFunc(resource);
             }
 
-            var registry = new wl.wl_registry(client, newID);
             registry.setVersion(1);
             registry.setImplementation({
                 bind: bind,
@@ -221,7 +219,15 @@
         function readNewID(type) {
             var val = view.getUint32(pos, littleEndian);
             pos += 4;
-            return val;
+
+            if (type.length > 0) {
+                var constructor = wl[type];
+                if (!constructor)
+                    throw new Error("Illegal type " + type);
+                return new constructor(client, val);
+            } else {
+                return val;
+            }
         }
         function readArray() {
             var size = view.getUint32(pos, littleEndian);

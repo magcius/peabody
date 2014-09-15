@@ -3,12 +3,11 @@
 
     function initCompositor(compositor) {
         function bindCompositor(compositorResource) {
-            function create_surface(newID) {
-                wl.createSurface(newID);
+            function create_surface(surfaceResource) {
+                wl.createSurface(surfaceResource);
             }
 
-            function create_region(newID) {
-                var regionResource = new wl.wayland.wl_region(client, newID);
+            function create_region(regionResurce) {
                 var region = new Region();
 
                 function destroy() {
