@@ -212,7 +212,9 @@
         function readObject(nullable) {
             var val = view.getUint32(pos, littleEndian);
             pos += 4;
-            return display.getObject(val, nullable);
+            var obj = display.getObject(val);
+            if (!nullable && obj == null)
+                throw new Error("Got a bad object");
         }
         function readNewID() {
             var val = view.getUint32(pos, littleEndian);
