@@ -360,6 +360,11 @@
     });
     protocol.wl_shell_surface = wl_shell_surface;
 
+    var WL_SURFACE_ERROR = {
+        'INVALID_SCALE': 0, // buffer scale value is invalid
+        'INVALID_TRANSFORM': 1, // buffer transform value is invalid
+    };
+    protocol.WL_SURFACE_ERROR = WL_SURFACE_ERROR;
 
     var wl_surface = wl.Resource.create({
         name: 'wl_surface',
@@ -393,7 +398,7 @@
 
     var wl_seat = wl.Resource.create({
         name: 'wl_seat',
-        version: 3,
+        version: 4,
 
         requests: [
             ["get_pointer", "n"],
@@ -453,7 +458,7 @@
 
     var wl_keyboard = wl.Resource.create({
         name: 'wl_keyboard',
-        version: 3,
+        version: 4,
 
         requests: [
             ["release", ""],
@@ -465,6 +470,7 @@
             ["leave", "uo"],
             ["key", "uuuu"],
             ["modifiers", "uuuuu"],
+            ["repeat_info", "ii"],
         ],
     });
     protocol.wl_keyboard = wl_keyboard;
