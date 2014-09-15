@@ -1,8 +1,9 @@
 
+import json
 import sys
 import xml.etree.ElementTree
 
-SIGNATURE = {
+ARG_TYPES = {
     'int': 'i',
     'uint': 'u',
     'fixed': 'f',
@@ -14,23 +15,29 @@ SIGNATURE = {
 }
 
 def scan_arg(arg):
-    argtype = SIGNATURE[arg.attrib['type']]
 
-    # registry.bind
-    if argtype == 'n' and 'interface' not in arg.attrib:
-        return 'sun'
+    argtype = ARG_TYPES[arg.attrib['type']]
 
-    if arg.attrib.get('allow-null', '') == "true":
-        return '?' + argtype
+    nullable = (arg.attrib.get('allow-null', '') == "true")
+    if nullable:
+        prefix = '?'
     else:
-        return argtype
+        prefix = ''
+
+    interface = arg.attrib.get('interface', '')
+
+    if argtype == 'n' and not interface:
+        # registry.bind, expands to name, version, obj
+        return ['s', 'u', 'n']
+
+    return [prefix + argtype + interface]
 
 def scan_signature(node):
-    signature = ''
+    types = []
     for child in node:
         if child.tag == 'arg':
-            signature += scan_arg(child)
-    return '            ["%s", "%s"],' % (node.attrib['name'], signature)
+            types += scan_arg(child)
+    return '            ["%s", %s],' % (node.attrib['name'], json.dumps(types))
 
 ENUM = '''
     var %(fqname)s = {

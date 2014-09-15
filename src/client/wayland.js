@@ -47,13 +47,13 @@
         version: 1,
 
         requests: [
-            ["sync", "n"],
-            ["get_registry", "n"],
+            ["sync", ["nwl_callback"]],
+            ["get_registry", ["nwl_registry"]],
         ],
 
         events: [
-            ["error", "ous"],
-            ["delete_id", "u"],
+            ["error", ["o", "u", "s"]],
+            ["delete_id", ["u"]],
         ],
     });
     wl.wl_display = wl_display;
@@ -64,12 +64,12 @@
         version: 1,
 
         requests: [
-            ["bind", "usun"],
+            ["bind", ["u", "s", "u", "n"]],
         ],
 
         events: [
-            ["global", "usu"],
-            ["global_remove", "u"],
+            ["global", ["u", "s", "u"]],
+            ["global_remove", ["u"]],
         ],
     });
     wl.wl_registry = wl_registry;
@@ -84,7 +84,7 @@
         ],
 
         events: [
-            ["done", "u"],
+            ["done", ["u"]],
         ],
     });
     wl.wl_callback = wl_callback;
@@ -95,8 +95,8 @@
         version: 3,
 
         requests: [
-            ["create_surface", "n"],
-            ["create_region", "n"],
+            ["create_surface", ["nwl_surface"]],
+            ["create_region", ["nwl_region"]],
         ],
 
         events: [
@@ -111,9 +111,9 @@
         version: 1,
 
         requests: [
-            ["create_buffer", "niiiiu"],
-            ["destroy", ""],
-            ["resize", "i"],
+            ["create_buffer", ["nwl_buffer", "i", "i", "i", "i", "u"]],
+            ["destroy", []],
+            ["resize", ["i"]],
         ],
 
         events: [
@@ -196,11 +196,11 @@
         version: 1,
 
         requests: [
-            ["create_pool", "nhi"],
+            ["create_pool", ["nwl_shm_pool", "h", "i"]],
         ],
 
         events: [
-            ["format", "u"],
+            ["format", ["u"]],
         ],
     });
     wl.wl_shm = wl_shm;
@@ -211,11 +211,11 @@
         version: 1,
 
         requests: [
-            ["destroy", ""],
+            ["destroy", []],
         ],
 
         events: [
-            ["release", ""],
+            ["release", []],
         ],
     });
     wl.wl_buffer = wl_buffer;
@@ -226,13 +226,13 @@
         version: 1,
 
         requests: [
-            ["accept", "u?s"],
-            ["receive", "sh"],
-            ["destroy", ""],
+            ["accept", ["u", "?s"]],
+            ["receive", ["s", "h"]],
+            ["destroy", []],
         ],
 
         events: [
-            ["offer", "s"],
+            ["offer", ["s"]],
         ],
     });
     wl.wl_data_offer = wl_data_offer;
@@ -243,14 +243,14 @@
         version: 1,
 
         requests: [
-            ["offer", "s"],
-            ["destroy", ""],
+            ["offer", ["s"]],
+            ["destroy", []],
         ],
 
         events: [
-            ["target", "?s"],
-            ["send", "sh"],
-            ["cancelled", ""],
+            ["target", ["?s"]],
+            ["send", ["s", "h"]],
+            ["cancelled", []],
         ],
     });
     wl.wl_data_source = wl_data_source;
@@ -261,17 +261,17 @@
         version: 1,
 
         requests: [
-            ["start_drag", "?oo?ou"],
-            ["set_selection", "?ou"],
+            ["start_drag", ["?owl_data_source", "owl_surface", "?owl_surface", "u"]],
+            ["set_selection", ["?owl_data_source", "u"]],
         ],
 
         events: [
-            ["data_offer", "n"],
-            ["enter", "uoff?o"],
-            ["leave", ""],
-            ["motion", "uff"],
-            ["drop", ""],
-            ["selection", "?o"],
+            ["data_offer", ["nwl_data_offer"]],
+            ["enter", ["u", "owl_surface", "f", "f", "?owl_data_offer"]],
+            ["leave", []],
+            ["motion", ["u", "f", "f"]],
+            ["drop", []],
+            ["selection", ["?owl_data_offer"]],
         ],
     });
     wl.wl_data_device = wl_data_device;
@@ -282,8 +282,8 @@
         version: 1,
 
         requests: [
-            ["create_data_source", "n"],
-            ["get_data_device", "no"],
+            ["create_data_source", ["nwl_data_source"]],
+            ["get_data_device", ["nwl_data_device", "owl_seat"]],
         ],
 
         events: [
@@ -298,7 +298,7 @@
         version: 1,
 
         requests: [
-            ["get_shell_surface", "no"],
+            ["get_shell_surface", ["nwl_shell_surface", "owl_surface"]],
         ],
 
         events: [
@@ -338,22 +338,22 @@
         version: 1,
 
         requests: [
-            ["pong", "u"],
-            ["move", "ou"],
-            ["resize", "ouu"],
-            ["set_toplevel", ""],
-            ["set_transient", "oiiu"],
-            ["set_fullscreen", "uu?o"],
-            ["set_popup", "ouoiiu"],
-            ["set_maximized", "?o"],
-            ["set_title", "s"],
-            ["set_class", "s"],
+            ["pong", ["u"]],
+            ["move", ["owl_seat", "u"]],
+            ["resize", ["owl_seat", "u", "u"]],
+            ["set_toplevel", []],
+            ["set_transient", ["owl_surface", "i", "i", "u"]],
+            ["set_fullscreen", ["u", "u", "?owl_output"]],
+            ["set_popup", ["owl_seat", "u", "owl_surface", "i", "i", "u"]],
+            ["set_maximized", ["?owl_output"]],
+            ["set_title", ["s"]],
+            ["set_class", ["s"]],
         ],
 
         events: [
-            ["ping", "u"],
-            ["configure", "uii"],
-            ["popup_done", ""],
+            ["ping", ["u"]],
+            ["configure", ["u", "i", "i"]],
+            ["popup_done", []],
         ],
     });
     wl.wl_shell_surface = wl_shell_surface;
@@ -369,20 +369,20 @@
         version: 3,
 
         requests: [
-            ["destroy", ""],
-            ["attach", "?oii"],
-            ["damage", "iiii"],
-            ["frame", "n"],
-            ["set_opaque_region", "?o"],
-            ["set_input_region", "?o"],
-            ["commit", ""],
-            ["set_buffer_transform", "i"],
-            ["set_buffer_scale", "i"],
+            ["destroy", []],
+            ["attach", ["?owl_buffer", "i", "i"]],
+            ["damage", ["i", "i", "i", "i"]],
+            ["frame", ["nwl_callback"]],
+            ["set_opaque_region", ["?owl_region"]],
+            ["set_input_region", ["?owl_region"]],
+            ["commit", []],
+            ["set_buffer_transform", ["i"]],
+            ["set_buffer_scale", ["i"]],
         ],
 
         events: [
-            ["enter", "o"],
-            ["leave", "o"],
+            ["enter", ["owl_output"]],
+            ["leave", ["owl_output"]],
         ],
     });
     wl.wl_surface = wl_surface;
@@ -399,14 +399,14 @@
         version: 4,
 
         requests: [
-            ["get_pointer", "n"],
-            ["get_keyboard", "n"],
-            ["get_touch", "n"],
+            ["get_pointer", ["nwl_pointer"]],
+            ["get_keyboard", ["nwl_keyboard"]],
+            ["get_touch", ["nwl_touch"]],
         ],
 
         events: [
-            ["capabilities", "u"],
-            ["name", "s"],
+            ["capabilities", ["u"]],
+            ["name", ["s"]],
         ],
     });
     wl.wl_seat = wl_seat;
@@ -428,16 +428,16 @@
         version: 3,
 
         requests: [
-            ["set_cursor", "u?oii"],
-            ["release", ""],
+            ["set_cursor", ["u", "?owl_surface", "i", "i"]],
+            ["release", []],
         ],
 
         events: [
-            ["enter", "uoff"],
-            ["leave", "uo"],
-            ["motion", "uff"],
-            ["button", "uuuu"],
-            ["axis", "uuf"],
+            ["enter", ["u", "owl_surface", "f", "f"]],
+            ["leave", ["u", "owl_surface"]],
+            ["motion", ["u", "f", "f"]],
+            ["button", ["u", "u", "u", "u"]],
+            ["axis", ["u", "u", "f"]],
         ],
     });
     wl.wl_pointer = wl_pointer;
@@ -459,16 +459,16 @@
         version: 4,
 
         requests: [
-            ["release", ""],
+            ["release", []],
         ],
 
         events: [
-            ["keymap", "uhu"],
-            ["enter", "uoa"],
-            ["leave", "uo"],
-            ["key", "uuuu"],
-            ["modifiers", "uuuuu"],
-            ["repeat_info", "ii"],
+            ["keymap", ["u", "h", "u"]],
+            ["enter", ["u", "owl_surface", "a"]],
+            ["leave", ["u", "owl_surface"]],
+            ["key", ["u", "u", "u", "u"]],
+            ["modifiers", ["u", "u", "u", "u", "u"]],
+            ["repeat_info", ["i", "i"]],
         ],
     });
     wl.wl_keyboard = wl_keyboard;
@@ -479,15 +479,15 @@
         version: 3,
 
         requests: [
-            ["release", ""],
+            ["release", []],
         ],
 
         events: [
-            ["down", "uuoiff"],
-            ["up", "uui"],
-            ["motion", "uiff"],
-            ["frame", ""],
-            ["cancel", ""],
+            ["down", ["u", "u", "owl_surface", "i", "f", "f"]],
+            ["up", ["u", "u", "i"]],
+            ["motion", ["u", "i", "f", "f"]],
+            ["frame", []],
+            ["cancel", []],
         ],
     });
     wl.wl_touch = wl_touch;
@@ -529,10 +529,10 @@
         ],
 
         events: [
-            ["geometry", "iiiiissi"],
-            ["mode", "uiii"],
-            ["done", ""],
-            ["scale", "i"],
+            ["geometry", ["i", "i", "i", "i", "i", "s", "s", "i"]],
+            ["mode", ["u", "i", "i", "i"]],
+            ["done", []],
+            ["scale", ["i"]],
         ],
     });
     wl.wl_output = wl_output;
@@ -543,9 +543,9 @@
         version: 1,
 
         requests: [
-            ["destroy", ""],
-            ["add", "iiii"],
-            ["subtract", "iiii"],
+            ["destroy", []],
+            ["add", ["i", "i", "i", "i"]],
+            ["subtract", ["i", "i", "i", "i"]],
         ],
 
         events: [
@@ -564,8 +564,8 @@
         version: 1,
 
         requests: [
-            ["destroy", ""],
-            ["get_subsurface", "noo"],
+            ["destroy", []],
+            ["get_subsurface", ["nwl_subsurface", "owl_surface", "owl_surface"]],
         ],
 
         events: [
@@ -584,12 +584,12 @@
         version: 1,
 
         requests: [
-            ["destroy", ""],
-            ["set_position", "ii"],
-            ["place_above", "o"],
-            ["place_below", "o"],
-            ["set_sync", ""],
-            ["set_desync", ""],
+            ["destroy", []],
+            ["set_position", ["i", "i"]],
+            ["place_above", ["owl_surface"]],
+            ["place_below", ["owl_surface"]],
+            ["set_sync", []],
+            ["set_desync", []],
         ],
 
         events: [

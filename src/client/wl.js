@@ -209,14 +209,16 @@
             pos += 4 - (length % 4);
             return string;
         }
-        function readObject(nullable) {
+        function readObject(type, nullable) {
             var val = view.getUint32(pos, littleEndian);
             pos += 4;
             var obj = display.getObject(val);
             if (!nullable && obj == null)
                 throw new Error("Got a bad object");
+            if (obj && obj.$iface.name != type)
+                throw new Error("Got a bad object");
         }
-        function readNewID() {
+        function readNewID(type) {
             var val = view.getUint32(pos, littleEndian);
             pos += 4;
             return val;
@@ -241,32 +243,30 @@
             throw new Error("No object by ID " + objectID);
         var iface = obj.constructor.$iface;
         var request = iface.requests[opcode];
-        var signature = request[1].split('');
+        var types = request[1];
 
         var args = [];
 
-        function readArg() {
+        function readArg(type) {
             var nullable = false;
-            var op = signature.shift();
-            if (op == '?') {
+            if (type[0] == '?') {
                 nullable = true;
-                op = signature.shift();
+                type = type.slice(1);
             }
 
-            switch (op) {
+            switch (type[0]) {
 	    case 'i': return readInt();
 	    case 'u': return readUint()
 	    case 'f': return readFixed();
 	    case 's': return readString();
-	    case 'o': return readObject(nullable);
-	    case 'n': return readNewID();
+	    case 'o': return readObject(type.slice(1), nullable);
+	    case 'n': return readNewID(type.slice(1));
 	    case 'a': return readArray();
 	    case 'h': return readFD();
             }
         }
 
-        while (signature.length > 0)
-            args.push(readArg());
+        args = args.map(readArg);
 
         if (pos != size)
             throw new Error("Size mismatch");
@@ -277,7 +277,7 @@
     // XXX: Be smarter about buffer management, here.
     var tmpBuffer = new ArrayBuffer(0xFFFF);
 
-    Client.prototype.$sendEvent = function(objectID, opcode, signature, args) {
+    Client.prototype.$sendEvent = function(objectID, opcode, types, args) {
         if (this._closed)
             return;
 
@@ -313,18 +313,20 @@
             // align to 32-bit boundary
             pos += 4 - (length % 4);
         }
-        function writeObject(obj, nullable) {
+        function writeObject(type, obj, nullable) {
             var arg;
-            if (obj)
+            if (obj) {
+                if (obj.$iface.name != type)
+                    throw new Error("Bad object");
                 arg = obj.$objectID;
-            else if (nullable)
+            } else if (nullable)
                 arg = 0;
             else
                 throw new Error("Required object, got null");
             view.setUint32(pos, arg, littleEndian);
             pos += 4;
         }
-        function writeNewID(arg) {
+        function writeNewID(type, arg) {
             view.setUint32(pos, arg, littleEndian);
             pos += 4;
         }
@@ -343,13 +345,11 @@
             throw new Error("welp");
         }
 
-        signature = signature.split('');
-        function writeArg() {
+        function writeArg(type) {
             var nullable = false;
-            var op = signature.shift();
-            if (op == '?') {
+            if (type[0] == '?') {
                 nullable = true;
-                op = signature.shift();
+                type = type.slice(1);
             }
 
             var arg = args.shift();
@@ -359,15 +359,14 @@
 	    case 'u': return writeUint(arg)
 	    case 'f': return writeFixed(arg);
 	    case 's': return writeString(arg);
-	    case 'o': return writeObject(arg, nullable);
-	    case 'n': return writeNewID(arg);
+	    case 'o': return writeObject(type.slice(1), arg, nullable);
+	    case 'n': return writeNewID(type.slice(1), arg);
 	    case 'a': return writeArray(arg);
 	    case 'h': return writeFD(arg);
             }
         }
 
-        while (signature.length > 0)
-            writeArg();
+        types.forEach(writeArg);
 
         var size = pos;
 
@@ -417,10 +416,10 @@
         iface.events.forEach(function(event, i) {
             var opcode = i;
             var name = event[0];
-            var signature = event[1];
+            var types = event[1];
             newResource.prototype[name] = function() {
                 var args = [].slice.call(arguments);
-                this.client.$sendEvent(this.$objectID, opcode, signature, args);
+                this.client.$sendEvent(this.$objectID, opcode, types, args);
             };
         });
         return newResource;
