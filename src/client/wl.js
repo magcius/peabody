@@ -398,8 +398,8 @@
     };
 
     Resource.create = function(iface) {
-        var newResource = function(client, id, version, handler) {
-            Resource.call(this, client, id, version, handler);
+        var newResource = function(client, objectID, version) {
+            Resource.call(this, client, objectID, version);
         };
         newResource.prototype = Object.create(Resource.prototype);
         newResource.prototype.constructor = newResource;
