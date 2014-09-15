@@ -8,7 +8,7 @@
             }
 
             function create_region(newID) {
-                var regionResource = new wl.wayland.wl_region(client, newID, this.version);
+                var regionResource = new wl.wayland.wl_region(client, newID);
                 var region = new Region();
 
                 function destroy() {
@@ -23,6 +23,7 @@
                     // Does anybody actually use this?
                 }
 
+                regionResource.setVersion(this.version);
                 regionResource.setImplementation({
                     destroy: destroy,
                     add: add,

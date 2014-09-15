@@ -84,11 +84,12 @@
     function initSHM(compositor) {
         function bindSHM(shmResource) {
             function create_pool(newID, fd, size) {
-                var poolResource = new wl.wl_shm_pool(this.client, newID, this.version);
+                var poolResource = new wl.wl_shm_pool(this.client, newID);
                 var pool = new ShadowPool(compositor, fd);
 
                 function create_buffer(newID, offset, width, height, stride, format) {
-                    var bufferResource = new wl.wl_shm_buffer(this.client, newID, this.version);
+                    var bufferResource = new wl.wl_shm_buffer(this.client, newID);
+                    bufferResource.setVersion(this.version);
                 }
 
                 function destroy() {
@@ -99,6 +100,7 @@
                     pool.setSize(newSize);
                 }
 
+                poolResource.setVersion(this.version);
                 poolResource.setImplementation({
                     create_buffer: create_buffer,
                     destroy: destroy,

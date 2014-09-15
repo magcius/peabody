@@ -121,7 +121,8 @@
         var display = client.display;
 
         function sync(newID) {
-            var callback = new wl.wl_callback(client, newID, this.version);
+            var callback = new wl.wl_callback(client, newID);
+            callback.setVersion(this.version);
             callback.done(display.nextSerial());
         }
 
@@ -138,11 +139,13 @@
 
             function bind(name, interfaceName, version, id) {
                 var global = findGlobal(name);
-                var resource = new global.constructor(client, id, version);
+                var resource = new global.constructor(client, id);
+                resource.setVersion(version);
                 global.bindFunc(resource);
             }
 
-            var registry = new wl.wl_registry(client, newID, this.version);
+            var registry = new wl.wl_registry(client, newID);
+            registry.setVersion(1);
             registry.setImplementation({
                 bind: bind,
             });
@@ -155,7 +158,8 @@
         }
 
         // Bootstrap the global display.
-        this.displayResource = new wl.wl_display(client, 1, 1);
+        this.displayResource = new wl.wl_display(client, 1);
+        this.displayResource.setVersion(1);
         this.displayResource.setImplementation({
             sync: sync,
             get_registry: get_registry,
@@ -369,14 +373,16 @@
     }
     wl.Client = Client;
 
-    function Resource(client, objectID, version) {
+    function Resource(client, objectID) {
         this.client = client;
-        this.version = version;
         this.$objectID = objectID;
         this._destroyListeners = [];
 
         client.$registerObject(this);
     }
+    Resource.prototype.setVersion = function(version) {
+        this.version = version;
+    };
     Resource.prototype.setImplementation = function(implementation) {
         this.$implementation = implementation;
     };
@@ -398,8 +404,8 @@
     };
 
     Resource.create = function(iface) {
-        var newResource = function(client, objectID, version) {
-            Resource.call(this, client, objectID, version);
+        var newResource = function(client, objectID) {
+            Resource.call(this, client, objectID);
         };
         newResource.prototype = Object.create(Resource.prototype);
         newResource.prototype.constructor = newResource;
