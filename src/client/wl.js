@@ -207,6 +207,7 @@
                 throw new Error("bad null byte");
             // align to 32-bit boundary
             pos += 4 - (length % 4);
+            return string;
         }
         function readObject(nullable) {
             var val = view.getUint32(pos, littleEndian);
